@@ -1,6 +1,11 @@
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -8,12 +13,14 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 
 
 
 public class App {
     public static void main(String[] args) throws Exception {
-        ABC abc = new ABC();
+        // ABC abc = new ABC();
+        X x = new X();
     }
 }
 
@@ -23,7 +30,7 @@ class ABC extends JFrame{
     JRadioButton jr1 = null, jr2 = null;
     JLabel jl = null;    
     JButton jButton = null;
-
+    JCheckBox jc1 = null, jc2 = null;
      public ABC(){
 
         jTextField = new JTextField(20);
@@ -32,6 +39,10 @@ class ABC extends JFrame{
         jButton = new JButton("Enter");
         jl = new JLabel();
         ButtonGroup buttonGroup = new ButtonGroup();
+        jc1 = new JCheckBox("Python");
+        jc2 = new JCheckBox("C++");
+
+
         buttonGroup.add(jr1);
         buttonGroup.add(jr2);
         add(jTextField);
@@ -39,7 +50,18 @@ class ABC extends JFrame{
         add(jr1);
         add(jr2);
         add(jl);
+        add(jc1);
+        add(jc2);
 
+        jc1.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                // TODO Auto-generated method stub
+                System.out.println("Python");
+            }
+            
+        });
         jButton.addActionListener(new ActionListener() {
 
             @Override
@@ -53,15 +75,47 @@ class ABC extends JFrame{
                     string = "Mrs."+string;
 
                 }
+                if(jc1.isSelected()){string+="Python";}
+                if(jc2.isSelected()){string+="C++";}
                 jl.setText(string);
             }
             
+        });
+
+        // addMouseListener(new MouseListener() {}); Won't use this because then we will have to implment all the methods declared in the interface.
+        addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent event){
+                int x = event.getX();
+                int y = event.getY();
+                System.out.println(x+" "+y);
+            } 
         });
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setSize(400, 400);
         setLayout(new FlowLayout());
+    }
+}
+
+class X extends JFrame{
+    public X(){
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+        setSize(400, 400);
+        setLayout(new FlowLayout());
+        JButton jButton = new JButton("Start");
+        add(jButton);
+        jButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Auto-generated method stub
+                new ABC();
+                dispose();
+            }
+            
+        });
     }
 }
 
