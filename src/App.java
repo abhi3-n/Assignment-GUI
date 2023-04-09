@@ -10,6 +10,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 public class App {
     
     public static void main(String[] args) throws Exception {
@@ -18,6 +23,8 @@ public class App {
 }
 
 class InitialPage extends JFrame{
+    private Socket client = null;
+
     int labelwidth = 200,
         labelheight = 50;
     
@@ -94,6 +101,20 @@ class InitialPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"3");
+                try {
+                    client = new Socket("192.168.1.19",4444);
+                    PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
+                    printWriter.write("1");
+                    printWriter.flush();
+                    printWriter.close();
+                    client.close();
+                } catch (UnknownHostException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -101,6 +122,20 @@ class InitialPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"2");
+                try {
+                    client = new Socket("192.168.1.19",4444);
+                    PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
+                    printWriter.write("return");
+                    printWriter.flush();
+                    printWriter.close();
+                    client.close();
+                } catch (UnknownHostException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -108,6 +143,20 @@ class InitialPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"4");
+                try {
+                    client = new Socket("192.168.1.19",4444);
+                    PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
+                    printWriter.write("2");
+                    printWriter.flush();
+                    printWriter.close();
+                    client.close();
+                } catch (UnknownHostException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -115,6 +164,20 @@ class InitialPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"2");
+                try {
+                    client = new Socket("192.168.1.19",4444);
+                    PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
+                    printWriter.write("return");
+                    printWriter.flush();
+                    printWriter.close();
+                    client.close();
+                } catch (UnknownHostException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -122,6 +185,20 @@ class InitialPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"5");
+                try {
+                    client = new Socket("192.168.1.19",4444);
+                    PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
+                    printWriter.write("1");
+                    printWriter.flush();
+                    printWriter.close();
+                    client.close();
+                } catch (UnknownHostException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -129,6 +206,20 @@ class InitialPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"2");
+                try {
+                    client = new Socket("192.168.1.19",4444);
+                    PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
+                    printWriter.write("return");
+                    printWriter.flush();
+                    printWriter.close();
+                    client.close();
+                } catch (UnknownHostException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -136,6 +227,20 @@ class InitialPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"6");
+                try {
+                    client = new Socket("192.168.1.19",4444);
+                    PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
+                    printWriter.write("1");
+                    printWriter.flush();
+                    printWriter.close();
+                    client.close();
+                } catch (UnknownHostException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -143,6 +248,20 @@ class InitialPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"2");
+                try {
+                    client = new Socket("192.168.1.19",4444);
+                    PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
+                    printWriter.write("return");
+                    printWriter.flush();
+                    printWriter.close();
+                    client.close();
+                } catch (UnknownHostException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
     }
