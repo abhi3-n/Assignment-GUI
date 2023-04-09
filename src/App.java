@@ -14,7 +14,6 @@ public class App {
     
     public static void main(String[] args) throws Exception {
         InitialPage iPage = new InitialPage();
-        
     }
 }
 
@@ -28,14 +27,14 @@ class InitialPage extends JFrame{
     JPanel InitialPanel = null;
     JPanel RegisterPagePanel = null;
     CardLayout cardLayout = null;
+
     InitialPage(){
         setTitle("Assignment");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setLayout(null);
         setBounds(100,100,600,600);
-        //setSize(600, 600);
-        //setLayout(new CardLayout());
+        
         cardLayout = new CardLayout();
 
         int labelwidth = 200,
@@ -45,16 +44,52 @@ class InitialPage extends JFrame{
         contPanel.setLayout(cardLayout);
         contPanel.setBounds(0,0,600,600);
 
-        InitialPanel = new JPanel();
-        InitialPanel.setBounds(0,0,600,600);
-        InitialPanel.setLayout(null);
-        InitialPanel.setBackground(Color.cyan);
+        initialPanelSetup(labelwidth,labelheight);
+        registerPanelSetup(labelwidth,labelheight);
+        
+        contPanel.add(InitialPanel,"1");
+        contPanel.add(RegisterPagePanel,"2");
+        add(contPanel);
+        buttonsSetup();
+        
+    }
 
+    private void buttonsSetup() {
+        Start.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(contPanel,"2");
+            }
+            
+        });
+        backButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(contPanel,"1");
+            }
+            
+        });
+    }
+
+    private void registerPanelSetup(int labelwidth, int labelheight) {
         RegisterPagePanel = new JPanel();
         RegisterPagePanel.setBounds(0,0,600,600);
         RegisterPagePanel.setLayout(null);
         RegisterPagePanel.setBackground(Color.CYAN);
 
+        backButton = new JButton("Go back");
+        backButton.setBounds(230,300,labelwidth-100,labelheight-25);
+        backButton.setFont(new Font("Serif", Font.PLAIN,24));
+        RegisterPagePanel.add(backButton);
+    }
+
+    private void initialPanelSetup(int labelwidth, int labelheight) {
+        InitialPanel = new JPanel();
+        InitialPanel.setBounds(0,0,600,600);
+        InitialPanel.setLayout(null);
+        InitialPanel.setBackground(Color.cyan);
         name = new JLabel("Abhinandan Narang");
         name.setBounds(180,130,labelwidth,labelheight);
         name.setFont(new Font("Serif",Font.PLAIN,24));
@@ -74,31 +109,5 @@ class InitialPage extends JFrame{
         Start.setBounds(230,300,labelwidth-100,labelheight-25);
         Start.setFont(new Font("Serif", Font.PLAIN,24));
         InitialPanel.add(Start);
-
-        backButton = new JButton("Go back");
-        backButton.setBounds(230,300,labelwidth-100,labelheight-25);
-        backButton.setFont(new Font("Serif", Font.PLAIN,24));
-        RegisterPagePanel.add(backButton);
-
-        
-        contPanel.add(InitialPanel,"1");
-        contPanel.add(RegisterPagePanel,"2");
-        add(contPanel);
-        Start.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(contPanel,"2");
-            }
-            
-        });
-        backButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(contPanel,"1");
-            }
-            
-        });
     }
 }
