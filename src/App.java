@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,8 +31,12 @@ class InitialPage extends JFrame{
     
     JButton InitialToRegister = null,
             RegisterBack = null,
-            RegisterProperty  = null,
-            RegisterDetailsBack = null,
+            RegisterChoice  = null,
+            RegisterAsOwner = null,
+            RegisterAsOwnerBack = null,
+            RegisterAsCustomer = null,
+            RegisterAsCustomerBack = null,
+            RegisterChoiceBack = null,
             SearchForProperty = null,
             SearchPropertyBack = null,
             UpdatePropertyDetails = null,
@@ -42,7 +47,9 @@ class InitialPage extends JFrame{
     JPanel contPanel = null,
            InitialPanel = null,
            RegisterPagePanel = null,
-           RegisterDetailsPanel = null,
+           RegisterChoicePanel = null,
+           RegisterAsOwnerPanel = null,
+           RegisterAsCustomerPanel = null,
            SearchForPropertyPanel = null,
            UpdatePropertyDetailsPanel = null,
            RemovePropertyPanel = null;
@@ -63,21 +70,26 @@ class InitialPage extends JFrame{
 
         initialPanelSetup();
         registerPanelSetup();
-        registerDetailsPanelSetup();
+        RegisterChoicePanelSetup();
+        registerAsOwnerPanelSetup();
+        registerAsCustomerPanelSetup();
         SearchForPropertyPanelSetup();
         updatePropertyDetailsPanelSetup();
         removePropertyPanelSetup();
         
         contPanel.add(InitialPanel,"1");
         contPanel.add(RegisterPagePanel,"2");
-        contPanel.add(RegisterDetailsPanel,"3");
+        contPanel.add(RegisterChoicePanel,"3");
         contPanel.add(SearchForPropertyPanel,"4");
         contPanel.add(UpdatePropertyDetailsPanel,"5");
         contPanel.add(RemovePropertyPanel,"6");
+        contPanel.add(RegisterAsOwnerPanel,"7");
+        contPanel.add(RegisterAsCustomerPanel,"8");
         add(contPanel);
         buttonsSetup();
         
     }
+
 
     private void buttonsSetup() {
         
@@ -97,7 +109,7 @@ class InitialPage extends JFrame{
             }    
         });
 
-        RegisterProperty.addActionListener(new ActionListener() {
+        RegisterChoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"3");
@@ -118,7 +130,7 @@ class InitialPage extends JFrame{
             }
         });
 
-        RegisterDetailsBack.addActionListener(new ActionListener() {
+        RegisterChoiceBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"2");
@@ -264,6 +276,142 @@ class InitialPage extends JFrame{
                 }
             }
         });
+
+        RegisterAsOwner.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(contPanel, "7");
+            }
+        });
+
+        RegisterAsCustomer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(contPanel, "8");
+            }
+        });
+
+        RegisterAsOwnerBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(contPanel, "3");
+            }
+        });
+        RegisterAsCustomerBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(contPanel, "3");
+            }
+        });
+    }
+    
+    
+    private void registerAsCustomerPanelSetup() {
+        RegisterAsCustomerPanel = new JPanel();
+        RegisterAsCustomerPanel.setBounds(0,0,600,600);
+        RegisterAsCustomerPanel.setLayout(null);
+        RegisterAsCustomerPanel.setBackground(Color.cyan);
+
+        RegisterAsCustomerBack = new JButton("Go back");
+        RegisterAsCustomerBack.setBounds(230,450,labelwidth-70,labelheight-25);
+        RegisterAsCustomerBack.setFont(new Font("Serif", Font.PLAIN,24));
+        RegisterAsCustomerPanel.add(RegisterAsCustomerBack);
+    }
+
+    private void registerAsOwnerPanelSetup() {
+        RegisterAsOwnerPanel = new JPanel();
+        RegisterAsOwnerPanel.setBounds(0,0,600,600);
+        RegisterAsOwnerPanel.setLayout(null);
+        RegisterAsOwnerPanel.setBackground(Color.cyan);
+
+        JLabel choice  = new JLabel("Fill Your Details.");
+        choice.setBounds(200,10,labelwidth,labelheight);
+        choice.setFont(new Font("Serif",Font.PLAIN,24));
+        RegisterAsOwnerPanel.add(choice);
+
+        JLabel fName  = new JLabel("First Name:");
+        fName.setBounds(50,44,labelwidth,labelheight);
+        fName.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsOwnerPanel.add(fName);
+        JTextField fNameF = new JTextField(50);
+        fNameF.setBounds(220,62,labelwidth,labelheight-34);
+        RegisterAsOwnerPanel.add(fNameF);
+
+        JLabel lName  = new JLabel("Last Name:");
+        lName.setBounds(50,70,labelwidth,labelheight);
+        lName.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsOwnerPanel.add(lName);
+        JTextField lNameF = new JTextField(50);
+        lNameF.setBounds(220,88,labelwidth,labelheight-34);
+        RegisterAsOwnerPanel.add(lNameF);
+
+        JLabel PhNo = new JLabel("Contact Number:");
+        PhNo.setBounds(50,96,labelwidth,labelheight);
+        PhNo.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsOwnerPanel.add(PhNo);
+        JTextField PhNoF = new JTextField(50);
+        PhNoF.setBounds(220,114,labelwidth,labelheight-34);
+        RegisterAsOwnerPanel.add(PhNoF);
+
+        JLabel DOB = new JLabel("DOB[YYYY-MM-DD]:");
+        DOB.setBounds(50,122,labelwidth,labelheight);
+        DOB.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsOwnerPanel.add(DOB);
+        JTextField DOBF = new JTextField(50);
+         DOBF.setBounds(220,140,labelwidth,labelheight-34);
+         RegisterAsOwnerPanel.add(DOBF);
+
+        JLabel property  = new JLabel("Enter Property Details.");
+        property.setBounds(200,148,labelwidth+50,labelheight);
+        property.setFont(new Font("Serif",Font.PLAIN,24));
+        RegisterAsOwnerPanel.add(property);
+
+        JLabel address = new JLabel("Property Address:");
+        address.setBounds(50,182,labelwidth,labelheight);
+        address.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsOwnerPanel.add(address);
+        JTextField addressF = new JTextField(50);
+        addressF.setBounds(220,202,labelwidth,labelheight-34);
+        RegisterAsOwnerPanel.add(addressF);
+
+        JLabel propCity = new JLabel("City:");
+        propCity.setBounds(50,208,labelwidth,labelheight);
+        propCity.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsOwnerPanel.add(propCity);
+        JTextField propCityF = new JTextField(50);
+        propCityF.setBounds(220,228,labelwidth,labelheight-34);
+        RegisterAsOwnerPanel.add(propCityF);
+
+        JLabel propState = new JLabel("State:");
+        propState.setBounds(50,234,labelwidth,labelheight);
+        propState.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsOwnerPanel.add(propState);
+        JTextField propStateF = new JTextField(50);
+        propStateF.setBounds(220,254,labelwidth,labelheight-34);
+        RegisterAsOwnerPanel.add(propStateF);
+
+        JLabel floorSize = new JLabel("Floor Size(Sq.Ft.):");
+        floorSize.setBounds(50,260,labelwidth,labelheight);
+        floorSize.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsOwnerPanel.add(floorSize);
+        JTextField floorSizeF = new JTextField(50);
+        floorSizeF.setBounds(220,280,labelwidth,labelheight-34);
+        RegisterAsOwnerPanel.add(floorSizeF);
+
+        JLabel propType = new JLabel("Property Type:");
+        propType.setBounds(50,286,labelwidth,labelheight);
+        propType.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsOwnerPanel.add(propType);
+
+        JLabel avlStatus = new JLabel("Availability Status:");
+        avlStatus.setBounds(50,312,labelwidth,labelheight);
+        avlStatus.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsOwnerPanel.add(avlStatus);
+        
+        RegisterAsOwnerBack = new JButton("Go back");
+        RegisterAsOwnerBack.setBounds(230,450,labelwidth-70,labelheight-25);
+        RegisterAsOwnerBack.setFont(new Font("Serif", Font.PLAIN,24));
+        RegisterAsOwnerPanel.add(RegisterAsOwnerBack);
     }
 
     private void removePropertyPanelSetup() {
@@ -307,16 +455,31 @@ class InitialPage extends JFrame{
         SearchForPropertyPanel.add(SearchPropertyBack);
     }
 
-    private void registerDetailsPanelSetup() {
-        RegisterDetailsPanel = new JPanel();
-        RegisterDetailsPanel.setBounds(0,0,600,600);
-        RegisterDetailsPanel.setLayout(null);
-        RegisterDetailsPanel.setBackground(Color.cyan);
+    private void RegisterChoicePanelSetup() {
+        RegisterChoicePanel = new JPanel();
+        RegisterChoicePanel.setBounds(0,0,600,600);
+        RegisterChoicePanel.setLayout(null);
+        RegisterChoicePanel.setBackground(Color.cyan);
 
-        RegisterDetailsBack = new JButton("Go back");
-        RegisterDetailsBack.setBounds(230,450,labelwidth-70,labelheight-25);
-        RegisterDetailsBack.setFont(new Font("Serif", Font.PLAIN,24));
-        RegisterDetailsPanel.add(RegisterDetailsBack);
+        JLabel choice  = new JLabel("Select your choice.");
+        choice.setBounds(200,30,labelwidth,labelheight);
+        choice.setFont(new Font("Serif",Font.PLAIN,24));
+        RegisterChoicePanel.add(choice);
+
+        RegisterAsOwner = new JButton("Register as Owner");
+        RegisterAsOwner.setBounds(150,100,labelwidth+80,labelheight);
+        RegisterAsOwner.setFont(new Font("Serif",Font.PLAIN,24));
+        RegisterChoicePanel.add(RegisterAsOwner);
+
+        RegisterAsCustomer = new JButton("Register as Customer");
+        RegisterAsCustomer.setBounds(150,200,labelwidth+80,labelheight);
+        RegisterAsCustomer.setFont(new Font("Serif",Font.PLAIN,24));
+        RegisterChoicePanel.add(RegisterAsCustomer);
+
+        RegisterChoiceBack = new JButton("Go back");
+        RegisterChoiceBack.setBounds(230,450,labelwidth-70,labelheight-25);
+        RegisterChoiceBack.setFont(new Font("Serif", Font.PLAIN,24));
+        RegisterChoicePanel.add(RegisterChoiceBack);
     }
 
     private void registerPanelSetup() {
@@ -330,10 +493,10 @@ class InitialPage extends JFrame{
         choice.setFont(new Font("Serif",Font.PLAIN,24));
         RegisterPagePanel.add(choice);
 
-        RegisterProperty = new JButton("Register Your Property");
-        RegisterProperty.setBounds(150,100,labelwidth+80,labelheight);
-        RegisterProperty.setFont(new Font("Serif",Font.PLAIN,24));
-        RegisterPagePanel.add(RegisterProperty);
+        RegisterChoice = new JButton("Register Your Property");
+        RegisterChoice.setBounds(150,100,labelwidth+80,labelheight);
+        RegisterChoice.setFont(new Font("Serif",Font.PLAIN,24));
+        RegisterPagePanel.add(RegisterChoice);
 
         SearchForProperty = new JButton("Search for Property");
         SearchForProperty.setBounds(150,200,labelwidth+80,labelheight);
