@@ -27,36 +27,49 @@ public class App {
 class InitialPage extends JFrame{
     private Socket client = null;
     
+    JLabel jl1 = new JLabel();
+    JLabel jl2 = new JLabel();
+    JLabel jl3 = new JLabel();
+    JLabel jl4 = new JLabel();
+    JLabel jl5 = new JLabel();
+    JTextField jt1 = new JTextField(50);
+    JTextField jt2 = new JTextField(50);
+    JTextField jt3 = new JTextField(50);
+    JTextField jt4 = new JTextField(50);
+    JTextField jt5 = new JTextField(50);
 
 
     int labelwidth = 200,
         labelheight = 50;
     
-    JButton InitialToRegister = null,
-            RegisterBack = null,
-            RegisterChoice  = null,
-            RegisterAsOwner = null,
-            RegisterAsOwnerBack = null,
-            RegisterAsCustomer = null,
-            RegisterAsCustomerBack = null,
-            RegisterChoiceBack = null,
-            SearchForProperty = null,
-            SearchPropertyBack = null,
+    JButton InitialToRegister =     null,
+            RegisterBack =          null,
+            RegisterChoice  =       null,
+            RegisterAsOwner =       null,
+            FinalRegisterOwnerProperty = null,
+            RegisterAsOwnerBack =   null,
+            RegisterAsCustomer =    null,
+            FinalRegisterCustomer = null,
+            RegisterAsCustomerBack =null,
+            RegisterChoiceBack =    null,
+            SearchForProperty =     null,
+            Search =                null,
+            SearchPropertyBack =    null,
             UpdatePropertyDetails = null,
-            UpdatePropertyBack = null,
-            RemoveProperty = null,
-            RemovePropertyBack = null;
+            UpdatePropertyBack =    null,
+            RemoveProperty =        null,
+            RemovePropertyBack =    null;
 
-    JPanel contPanel = null,
-           InitialPanel = null,
-           RegisterPagePanel = null,
-           RegisterChoicePanel = null,
-           RegisterAsOwnerPanel = null,
-           RegisterAsCustomerPanel = null,
+    JPanel contPanel =              null,
+           InitialPanel =           null,
+           RegisterPagePanel =      null,
+           RegisterChoicePanel =    null,
+           RegisterAsOwnerPanel =   null,
+           RegisterAsCustomerPanel =null,
            SearchForPropertyPanel = null,
            UpdatePropertyDetailsPanel = null,
-           RemovePropertyPanel = null;
-    CardLayout cardLayout = null;
+           RemovePropertyPanel =    null;
+    CardLayout cardLayout =         null;
 
     InitialPage(){
         setTitle("Assignment");
@@ -306,6 +319,18 @@ class InitialPage extends JFrame{
                 cardLayout.show(contPanel, "3");
             }
         });
+        FinalRegisterOwnerProperty.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        FinalRegisterCustomer.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
     }
     
     
@@ -315,8 +340,83 @@ class InitialPage extends JFrame{
         RegisterAsCustomerPanel.setLayout(null);
         RegisterAsCustomerPanel.setBackground(Color.cyan);
 
+        JLabel heading  = new JLabel("Fill Your Details.");
+        heading.setBounds(200,10,labelwidth,labelheight);
+        heading.setFont(new Font("Serif",Font.PLAIN,24));
+        RegisterAsCustomerPanel.add(heading);
+
+        JLabel fName  = new JLabel("First Name:");
+        fName.setBounds(50,44,labelwidth,labelheight);
+        fName.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsCustomerPanel.add(fName);
+        JTextField fNameF = new JTextField(50);
+        fNameF.setBounds(220,62,labelwidth,labelheight-34);
+        RegisterAsCustomerPanel.add(fNameF);
+
+        JLabel lName  = new JLabel("Last Name:");
+        lName.setBounds(50,70,labelwidth,labelheight);
+        lName.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsCustomerPanel.add(lName);
+        JTextField lNameF = new JTextField(50);
+        lNameF.setBounds(220,88,labelwidth,labelheight-34);
+        RegisterAsCustomerPanel.add(lNameF);
+
+        JLabel PhNo = new JLabel("Contact Number:");
+        PhNo.setBounds(50,96,labelwidth,labelheight);
+        PhNo.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsCustomerPanel.add(PhNo);
+        JTextField PhNoF = new JTextField(50);
+        PhNoF.setBounds(220,114,labelwidth,labelheight-34);
+        RegisterAsCustomerPanel.add(PhNoF);
+
+        JLabel DOB = new JLabel("DOB[YYYY-MM-DD]:");
+        DOB.setBounds(50,122,labelwidth,labelheight);
+        DOB.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsCustomerPanel.add(DOB);
+        JTextField DOBF = new JTextField(50);
+         DOBF.setBounds(220,140,labelwidth,labelheight-34);
+         RegisterAsCustomerPanel.add(DOBF);
+
+
+         ///property type
+        JLabel property  = new JLabel("Enter Required Property Details.");
+        property.setBounds(150,148,labelwidth+150,labelheight);
+        property.setFont(new Font("Serif",Font.PLAIN,24));
+        RegisterAsCustomerPanel.add(property);
+
+        JLabel propType = new JLabel("Required Type");
+        propType.setBounds(50,182,labelwidth,labelheight);
+        propType.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsCustomerPanel.add(propType);
+        String propTypeOptions[] = {"Apartment","House","Standalone Shop","Office building"};
+        JComboBox<String> propTypeC = new JComboBox<String>(propTypeOptions);
+        propTypeC.setBounds(220,202,labelwidth,labelheight-34);
+        RegisterAsCustomerPanel.add(propTypeC);
+        
+
+        JLabel propCity = new JLabel("City:");
+        propCity.setBounds(50,208,labelwidth,labelheight);
+        propCity.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsCustomerPanel.add(propCity);
+        JTextField propCityF = new JTextField(50);
+        propCityF.setBounds(220,228,labelwidth,labelheight-34);
+        RegisterAsCustomerPanel.add(propCityF);
+
+        JLabel propState = new JLabel("State:");
+        propState.setBounds(50,234,labelwidth,labelheight);
+        propState.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsCustomerPanel.add(propState);
+        JTextField propStateF = new JTextField(50);
+        propStateF.setBounds(220,254,labelwidth,labelheight-34);
+        RegisterAsCustomerPanel.add(propStateF);
+        
+        FinalRegisterCustomer = new JButton("Register");
+        FinalRegisterCustomer.setBounds(180,500,labelwidth-70,labelheight-25);
+        FinalRegisterCustomer.setFont(new Font("Serif", Font.PLAIN,24));
+        RegisterAsCustomerPanel.add(FinalRegisterCustomer);
+        
         RegisterAsCustomerBack = new JButton("Go back");
-        RegisterAsCustomerBack.setBounds(230,450,labelwidth-70,labelheight-25);
+        RegisterAsCustomerBack.setBounds(330,500,labelwidth-70,labelheight-25);
         RegisterAsCustomerBack.setFont(new Font("Serif", Font.PLAIN,24));
         RegisterAsCustomerPanel.add(RegisterAsCustomerBack);
     }
@@ -327,10 +427,10 @@ class InitialPage extends JFrame{
         RegisterAsOwnerPanel.setLayout(null);
         RegisterAsOwnerPanel.setBackground(Color.cyan);
 
-        JLabel choice  = new JLabel("Fill Your Details.");
-        choice.setBounds(200,10,labelwidth,labelheight);
-        choice.setFont(new Font("Serif",Font.PLAIN,24));
-        RegisterAsOwnerPanel.add(choice);
+        JLabel heading  = new JLabel("Fill Your Details.");
+        heading.setBounds(200,10,labelwidth,labelheight);
+        heading.setFont(new Font("Serif",Font.PLAIN,24));
+        RegisterAsOwnerPanel.add(heading);
 
         JLabel fName  = new JLabel("First Name:");
         fName.setBounds(50,44,labelwidth,labelheight);
@@ -420,23 +520,17 @@ class InitialPage extends JFrame{
         JComboBox<String> propTypeC = new JComboBox<String>(propTypeOptions);
         propTypeC.setBounds(220,306,labelwidth,labelheight-34);
         RegisterAsOwnerPanel.add(propTypeC);
-        
+        RegisterAsOwnerPanel.add(jl1);RegisterAsOwnerPanel.add(jl2);RegisterAsOwnerPanel.add(jl3);
+        RegisterAsOwnerPanel.add(jl4);RegisterAsOwnerPanel.add(jl5);
+        RegisterAsOwnerPanel.add(jt1);RegisterAsOwnerPanel.add(jt2);RegisterAsOwnerPanel.add(jt3);
+        RegisterAsOwnerPanel.add(jt4);RegisterAsOwnerPanel.add(jt5);
         propTypeC.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                //JLabel jl1 = null, jl2 = null, jl3 = null, jl4 = null, jl5 = null;
-                //JTextField jt1 = null, jt2 = null, jt3 = null, jt4 = null, jt5 = null;
-                JLabel jl1 = new JLabel();
-                JLabel jl2 = new JLabel();
-                JLabel jl3 = new JLabel();
-                JLabel jl4 = new JLabel();
-                JLabel jl5 = new JLabel();
-                JTextField jt1 = new JTextField(50);
-                JTextField jt2 = new JTextField(50);
-                JTextField jt3 = new JTextField(50);
-                JTextField jt4 = new JTextField(50);
-                JTextField jt5 = new JTextField(50);
-
+                
+                jl1.setVisible(false);jl2.setVisible(false);jl3.setVisible(false);jl4.setVisible(false);jl5.setVisible(false);
+                jt1.setVisible(false);jt2.setVisible(false);jt3.setVisible(false);jt4.setVisible(false);jt5.setVisible(false);
+                
                 jl1.setBounds(50,338,labelwidth,labelheight);
                 jl1.setFont(new Font("Serif",Font.PLAIN,16));
                 jt1.setBounds(220,358,labelwidth,labelheight-34);
@@ -471,32 +565,41 @@ class InitialPage extends JFrame{
                     else{
                         jl4.setText("Storeys:");jl5.setText("Garage Availability[Y/N]:");
                     }
-                    RegisterAsOwnerPanel.add(jl1);RegisterAsOwnerPanel.add(jl2);RegisterAsOwnerPanel.add(jl3);
-                    RegisterAsOwnerPanel.add(jl4);RegisterAsOwnerPanel.add(jl5);
-                    RegisterAsOwnerPanel.add(jt1);RegisterAsOwnerPanel.add(jt2);RegisterAsOwnerPanel.add(jt3);
-                    RegisterAsOwnerPanel.add(jt4);RegisterAsOwnerPanel.add(jt5);
+                    jl1.setVisible(true);jl2.setVisible(true);jl3.setVisible(true);jl4.setVisible(true);jl5.setVisible(true);
+                    jt1.setVisible(true);jt2.setVisible(true);jt3.setVisible(true);jt4.setVisible(true);jt5.setVisible(true);
                 }
                 else{
                     jl1.setText("Storeys:");RegisterAsOwnerPanel.add(jl1);RegisterAsOwnerPanel.add(jt1);
+                    jl1.setVisible(true);jt1.setVisible(true);
                     if(item == "Office building"){
                         jl2.setText("Cabins:");jl3.setText("Meeting Rooms:");jl4.setText("Cubicles:");
                         RegisterAsOwnerPanel.add(jl2);RegisterAsOwnerPanel.add(jl3);RegisterAsOwnerPanel.add(jl4);
                         RegisterAsOwnerPanel.add(jt2);RegisterAsOwnerPanel.add(jt3);RegisterAsOwnerPanel.add(jt4);
+                        jl2.setVisible(true);jl3.setVisible(true);jl4.setVisible(true);
+                        jt2.setVisible(true);jt3.setVisible(true);jt4.setVisible(true);
                     }
                     else{
                         jl2.setText("Number of Sections:");
                         RegisterAsOwnerPanel.add(jl2);RegisterAsOwnerPanel.add(jt2);
+                        jl2.setVisible(true);jt2.setVisible(true);
                     }
                 }
             }
         });
         
+        
+        FinalRegisterOwnerProperty = new JButton("Register");
+        FinalRegisterOwnerProperty.setBounds(180,500,labelwidth-70,labelheight-25);
+        FinalRegisterOwnerProperty.setFont(new Font("Serif", Font.PLAIN,24));
+        RegisterAsOwnerPanel.add(FinalRegisterOwnerProperty);
+
         RegisterAsOwnerBack = new JButton("Go back");
-        RegisterAsOwnerBack.setBounds(230,550,labelwidth-70,labelheight-25);
+        RegisterAsOwnerBack.setBounds(330,500,labelwidth-70,labelheight-25);
         RegisterAsOwnerBack.setFont(new Font("Serif", Font.PLAIN,24));
         RegisterAsOwnerPanel.add(RegisterAsOwnerBack);
     }
 
+    
     private void removePropertyPanelSetup() {
         RemovePropertyPanel = new JPanel();
         RemovePropertyPanel.setBounds(0,0,600,600);
@@ -627,5 +730,83 @@ class InitialPage extends JFrame{
         InitialToRegister.setBounds(230,300,labelwidth-100,labelheight-25);
         InitialToRegister.setFont(new Font("Serif", Font.PLAIN,24));
         InitialPanel.add(InitialToRegister);
+    }
+    protected JTextField getjt5() {
+        if(jt5 == null){
+            jt5 = new JTextField();
+        }
+        return jt5;
+    }
+
+
+    protected JTextField getjt4() {
+        if(jt4 == null){
+            jt4 = new JTextField();
+        }
+        return jt4;
+    }
+
+
+    protected JTextField getjt3() {
+        if(jt3 == null){
+            jt3 = new JTextField();
+        }
+        return jt3;
+    }
+
+
+    protected JTextField getjt2() {
+        if(jt2 == null){
+            jt2 = new JTextField();
+        }
+        return jt2;
+    }
+
+
+    protected JTextField getjt1() {
+        if(jt1 == null){
+            jt1 = new JTextField();
+        }
+        return jt1;
+    }
+
+
+    protected JLabel getjl5() {
+        if(jl5 == null){
+            jl5 = new JLabel();
+        }
+        return jl5;
+    }
+
+
+    protected JLabel getjl4() {
+        if(jl4 == null){
+            jl4 = new JLabel();
+        }
+        return jl4;
+    }
+
+
+    protected JLabel getjl3() {
+        if(jl3 == null){
+            jl3 = new JLabel();
+        }
+        return jl3;
+    }
+
+
+    protected JLabel getjl2() {
+        if(jl2 == null){
+            jl2 = new JLabel();
+        }
+        return jl2;
+    }
+
+
+    protected JLabel getjl1() {
+        if(jl1 == null){
+            jl1 = new JLabel();
+        }
+        return jl1;
     }
 }
