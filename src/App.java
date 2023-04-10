@@ -56,8 +56,12 @@ class InitialPage extends JFrame{
             Search =                null,
             SearchPropertyBack =    null,
             UpdatePropertyDetails = null,
+            ViewUpdateProperty =    null,
+            FinalUpdate =           null,
             UpdatePropertyBack =    null,
             RemoveProperty =        null,
+            ViewProperty =          null,
+            FinalRemove =           null,
             RemovePropertyBack =    null;
 
     JPanel contPanel =              null,
@@ -329,6 +333,36 @@ class InitialPage extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent e) {
+            }
+        });
+
+        ViewProperty.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ViewProperty.setVisible(false);
+                FinalRemove.setVisible(true);
+            }
+        });
+
+        FinalRemove.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        ViewUpdateProperty.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ViewUpdateProperty.setVisible(false);
+                FinalUpdate.setVisible(true);
+            }
+        });
+
+        FinalUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }
@@ -606,10 +640,32 @@ class InitialPage extends JFrame{
         RemovePropertyPanel.setLayout(null);
         RemovePropertyPanel.setBackground(Color.cyan);
 
+        JLabel heading  = new JLabel("Remove Property from Portal");
+        heading.setBounds(200,10,labelwidth+80,labelheight);
+        heading.setFont(new Font("Serif",Font.PLAIN,24));
+        RemovePropertyPanel.add(heading);    
         
+        JLabel propID  = new JLabel("Enter Property ID:");
+        propID.setBounds(50,44,labelwidth,labelheight);
+        propID.setFont(new Font("Serif",Font.PLAIN,16));
+        RemovePropertyPanel.add(propID);
+        JTextField propIDF = new JTextField(50);
+        propIDF.setBounds(220,62,labelwidth,labelheight-34);
+        RemovePropertyPanel.add(propIDF);
+        
+        ViewProperty = new JButton("View Property");
+        ViewProperty.setBounds(140,500,labelwidth-20,labelheight-25);
+        ViewProperty.setFont(new Font("Serif", Font.PLAIN,24));
+        RemovePropertyPanel.add(ViewProperty);
+
+        FinalRemove = new JButton("Remove");
+        FinalRemove.setVisible(false);
+        FinalRemove.setBounds(180,500,labelwidth-70,labelheight-25);
+        FinalRemove.setFont(new Font("Serif", Font.PLAIN,24));
+        RemovePropertyPanel.add(FinalRemove);
         
         RemovePropertyBack = new JButton("Go back");
-        RemovePropertyBack.setBounds(230,450,labelwidth-70,labelheight-25);
+        RemovePropertyBack.setBounds(330,500,labelwidth-70,labelheight-25);
         RemovePropertyBack.setFont(new Font("Serif", Font.PLAIN,24));
         RemovePropertyPanel.add(RemovePropertyBack);
     }
@@ -620,10 +676,33 @@ class InitialPage extends JFrame{
         UpdatePropertyDetailsPanel.setLayout(null);
         UpdatePropertyDetailsPanel.setBackground(Color.cyan);
 
+        JLabel heading  = new JLabel("Remove Property from Portal");
+        heading.setBounds(200,10,labelwidth+80,labelheight);
+        heading.setFont(new Font("Serif",Font.PLAIN,24));
+        UpdatePropertyDetailsPanel.add(heading);  
         
+        JLabel propID  = new JLabel("Enter Property ID:");
+        propID.setBounds(50,44,labelwidth,labelheight);
+        propID.setFont(new Font("Serif",Font.PLAIN,16));
+        UpdatePropertyDetailsPanel.add(propID);
+        JTextField propIDF = new JTextField(50);
+        propIDF.setBounds(220,62,labelwidth,labelheight-34);
+        UpdatePropertyDetailsPanel.add(propIDF);
+        
+
+        ViewUpdateProperty = new JButton("View Property");
+        ViewUpdateProperty.setBounds(140,500,labelwidth-20,labelheight-25);
+        ViewUpdateProperty.setFont(new Font("Serif", Font.PLAIN,24));
+        UpdatePropertyDetailsPanel.add(ViewUpdateProperty);
+
+        FinalUpdate = new JButton("Update");
+        FinalUpdate.setVisible(false);
+        FinalUpdate.setBounds(180,500,labelwidth-70,labelheight-25);
+        FinalUpdate.setFont(new Font("Serif", Font.PLAIN,24));
+        UpdatePropertyDetailsPanel.add(FinalUpdate);
         
         UpdatePropertyBack = new JButton("Go back");
-        UpdatePropertyBack.setBounds(230,450,labelwidth-70,labelheight-25);
+        UpdatePropertyBack.setBounds(330,500,labelwidth-70,labelheight-25);
         UpdatePropertyBack.setFont(new Font("Serif", Font.PLAIN,24));
         UpdatePropertyDetailsPanel.add(UpdatePropertyBack);
     }
@@ -730,83 +809,5 @@ class InitialPage extends JFrame{
         InitialToRegister.setBounds(230,300,labelwidth-100,labelheight-25);
         InitialToRegister.setFont(new Font("Serif", Font.PLAIN,24));
         InitialPanel.add(InitialToRegister);
-    }
-    protected JTextField getjt5() {
-        if(jt5 == null){
-            jt5 = new JTextField();
-        }
-        return jt5;
-    }
-
-
-    protected JTextField getjt4() {
-        if(jt4 == null){
-            jt4 = new JTextField();
-        }
-        return jt4;
-    }
-
-
-    protected JTextField getjt3() {
-        if(jt3 == null){
-            jt3 = new JTextField();
-        }
-        return jt3;
-    }
-
-
-    protected JTextField getjt2() {
-        if(jt2 == null){
-            jt2 = new JTextField();
-        }
-        return jt2;
-    }
-
-
-    protected JTextField getjt1() {
-        if(jt1 == null){
-            jt1 = new JTextField();
-        }
-        return jt1;
-    }
-
-
-    protected JLabel getjl5() {
-        if(jl5 == null){
-            jl5 = new JLabel();
-        }
-        return jl5;
-    }
-
-
-    protected JLabel getjl4() {
-        if(jl4 == null){
-            jl4 = new JLabel();
-        }
-        return jl4;
-    }
-
-
-    protected JLabel getjl3() {
-        if(jl3 == null){
-            jl3 = new JLabel();
-        }
-        return jl3;
-    }
-
-
-    protected JLabel getjl2() {
-        if(jl2 == null){
-            jl2 = new JLabel();
-        }
-        return jl2;
-    }
-
-
-    protected JLabel getjl1() {
-        if(jl1 == null){
-            jl1 = new JLabel();
-        }
-        return jl1;
     }
 }
