@@ -6,11 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JCheckBox;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,7 +30,8 @@ public class App {
 
 class InitialPage extends JFrame{
     private Socket client = null;
-    
+    JCheckBox alreadyReg = null;
+
     JLabel jl1 = new JLabel();
     JLabel jl2 = new JLabel();
     JLabel jl3 = new JLabel();
@@ -55,6 +60,7 @@ class InitialPage extends JFrame{
             SearchForProperty =     null,
             Search =                null,
             SearchPropertyBack =    null,
+            SearchResultsBack =     null,
             UpdatePropertyDetails = null,
             ViewUpdateProperty =    null,
             FinalUpdate =           null,
@@ -71,6 +77,7 @@ class InitialPage extends JFrame{
            RegisterAsOwnerPanel =   null,
            RegisterAsCustomerPanel =null,
            SearchForPropertyPanel = null,
+           searchResultsPanel =     null,
            UpdatePropertyDetailsPanel = null,
            RemovePropertyPanel =    null;
     CardLayout cardLayout =         null;
@@ -96,6 +103,7 @@ class InitialPage extends JFrame{
         SearchForPropertyPanelSetup();
         updatePropertyDetailsPanelSetup();
         removePropertyPanelSetup();
+        searchResultsPanelSetup();
         
         contPanel.add(InitialPanel,"1");
         contPanel.add(RegisterPagePanel,"2");
@@ -105,11 +113,11 @@ class InitialPage extends JFrame{
         contPanel.add(RemovePropertyPanel,"6");
         contPanel.add(RegisterAsOwnerPanel,"7");
         contPanel.add(RegisterAsCustomerPanel,"8");
+        contPanel.add(searchResultsPanel,"9");
         add(contPanel);
         buttonsSetup();
         
     }
-
 
     private void buttonsSetup() {
         
@@ -315,6 +323,11 @@ class InitialPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel, "3");
+                alreadyReg.setSelected(false);
+                jl1.setVisible(false);jl2.setVisible(false);jl3.setVisible(false);jl4.setVisible(false);
+                jl5.setVisible(false);     
+                jt1.setVisible(false);jt2.setVisible(false);jt3.setVisible(false);jt4.setVisible(false);
+                jt5.setVisible(false);                 
             }
         });
         RegisterAsCustomerBack.addActionListener(new ActionListener() {
@@ -365,9 +378,39 @@ class InitialPage extends JFrame{
 
             }
         });
+
+        Search.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(contPanel, "9");
+            }
+        });
+
+        SearchResultsBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(contPanel,"4");
+            }
+        });
     }
     
-    
+    private void searchResultsPanelSetup() {
+        searchResultsPanel = new JPanel();
+        searchResultsPanel.setBounds(0,0,600,600);
+        searchResultsPanel.setLayout(null);
+        searchResultsPanel.setBackground(Color.cyan);
+
+        JLabel heading  = new JLabel("Search Results.");
+        heading.setBounds(200,10,labelwidth,labelheight);
+        heading.setFont(new Font("Serif",Font.PLAIN,24));
+        searchResultsPanel.add(heading);
+
+        SearchResultsBack = new JButton("Go back");
+        SearchResultsBack.setBounds(230,500,labelwidth-70,labelheight-25);
+        SearchResultsBack.setFont(new Font("Serif", Font.PLAIN,24));
+        searchResultsPanel.add(SearchResultsBack);
+    }
+
     private void registerAsCustomerPanelSetup() {
         RegisterAsCustomerPanel = new JPanel();
         RegisterAsCustomerPanel.setBounds(0,0,600,600);
@@ -422,7 +465,7 @@ class InitialPage extends JFrame{
         propType.setBounds(50,182,labelwidth,labelheight);
         propType.setFont(new Font("Serif",Font.PLAIN,16));
         RegisterAsCustomerPanel.add(propType);
-        String propTypeOptions[] = {"Apartment","House","Standalone Shop","Office building"};
+        String propTypeOptions[] = {"","Apartment","House","Standalone Shop","Office building"};
         JComboBox<String> propTypeC = new JComboBox<String>(propTypeOptions);
         propTypeC.setBounds(220,202,labelwidth,labelheight-34);
         RegisterAsCustomerPanel.add(propTypeC);
@@ -474,6 +517,16 @@ class InitialPage extends JFrame{
         fNameF.setBounds(220,62,labelwidth,labelheight-34);
         RegisterAsOwnerPanel.add(fNameF);
 
+        JLabel ownerID  = new JLabel("Enter your ID:");
+        ownerID.setBounds(50,44,labelwidth,labelheight);
+        ownerID.setFont(new Font("Serif",Font.PLAIN,16));
+        RegisterAsOwnerPanel.add(ownerID);
+        JTextField ownerIDF = new JTextField(50);
+        ownerIDF.setBounds(220,62,labelwidth,labelheight-34);
+        RegisterAsOwnerPanel.add(ownerIDF);
+        ownerID.setVisible(false);
+        ownerIDF.setVisible(false);
+
         JLabel lName  = new JLabel("Last Name:");
         lName.setBounds(50,70,labelwidth,labelheight);
         lName.setFont(new Font("Serif",Font.PLAIN,16));
@@ -495,8 +548,38 @@ class InitialPage extends JFrame{
         DOB.setFont(new Font("Serif",Font.PLAIN,16));
         RegisterAsOwnerPanel.add(DOB);
         JTextField DOBF = new JTextField(50);
-         DOBF.setBounds(220,140,labelwidth,labelheight-34);
-         RegisterAsOwnerPanel.add(DOBF);
+        DOBF.setBounds(220,140,labelwidth,labelheight-34);
+        RegisterAsOwnerPanel.add(DOBF);
+
+        alreadyReg = new JCheckBox("Registered Owner");
+        alreadyReg.setBounds(440,60,labelwidth-70,labelheight-30);
+        RegisterAsOwnerPanel.add(alreadyReg);
+        
+
+        alreadyReg.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(alreadyReg.isSelected()){
+                    fName.setVisible(false);fNameF.setVisible(false);
+                    lName.setVisible(false);lNameF.setVisible(false);
+                    PhNo.setVisible(false);PhNoF.setVisible(false);
+                    DOB.setVisible(false);DOBF.setVisible(false);
+                    ownerID.setVisible(true);
+                    ownerIDF.setVisible(true);
+                }
+                else{
+                    fName.setVisible(true);fNameF.setVisible(true);
+                    lName.setVisible(true);lNameF.setVisible(true);
+                    PhNo.setVisible(true);PhNoF.setVisible(true);
+                    DOB.setVisible(true);DOBF.setVisible(true);
+                    ownerID.setVisible(false);
+                    ownerIDF.setVisible(false);
+                }
+                
+            }
+        });
+
+
 
         JLabel property  = new JLabel("Enter Property Details.");
         property.setBounds(200,148,labelwidth+50,labelheight);
@@ -540,7 +623,7 @@ class InitialPage extends JFrame{
         avlStatus.setBounds(50,312,labelwidth,labelheight);
         avlStatus.setFont(new Font("Serif",Font.PLAIN,16));
         RegisterAsOwnerPanel.add(avlStatus);
-        String avlStatusOptions[] = {"Soon to be Available","Available for Rent","Available for Purchase",
+        String avlStatusOptions[] = {"","Soon to be Available","Available for Rent","Available for Purchase",
                                     "Rented","Bought"};
         JComboBox<String> avlStatusC = new JComboBox<String>(avlStatusOptions);
         avlStatusC.setBounds(220,332,labelwidth,labelheight-34);
@@ -550,7 +633,7 @@ class InitialPage extends JFrame{
         propType.setBounds(50,286,labelwidth,labelheight);
         propType.setFont(new Font("Serif",Font.PLAIN,16));
         RegisterAsOwnerPanel.add(propType);
-        String propTypeOptions[] = {"Apartment","House","Standalone Shop","Office building"};
+        String propTypeOptions[] = {"","Apartment","House","Standalone Shop","Office building"};
         JComboBox<String> propTypeC = new JComboBox<String>(propTypeOptions);
         propTypeC.setBounds(220,306,labelwidth,labelheight-34);
         RegisterAsOwnerPanel.add(propTypeC);
@@ -641,7 +724,7 @@ class InitialPage extends JFrame{
         RemovePropertyPanel.setBackground(Color.cyan);
 
         JLabel heading  = new JLabel("Remove Property from Portal");
-        heading.setBounds(200,10,labelwidth+80,labelheight);
+        heading.setBounds(200,10,labelwidth+110,labelheight);
         heading.setFont(new Font("Serif",Font.PLAIN,24));
         RemovePropertyPanel.add(heading);    
         
@@ -676,8 +759,8 @@ class InitialPage extends JFrame{
         UpdatePropertyDetailsPanel.setLayout(null);
         UpdatePropertyDetailsPanel.setBackground(Color.cyan);
 
-        JLabel heading  = new JLabel("Remove Property from Portal");
-        heading.setBounds(200,10,labelwidth+80,labelheight);
+        JLabel heading  = new JLabel("Update Property Details");
+        heading.setBounds(200,10,labelwidth+100,labelheight);
         heading.setFont(new Font("Serif",Font.PLAIN,24));
         UpdatePropertyDetailsPanel.add(heading);  
         
@@ -688,12 +771,29 @@ class InitialPage extends JFrame{
         JTextField propIDF = new JTextField(50);
         propIDF.setBounds(220,62,labelwidth,labelheight-34);
         UpdatePropertyDetailsPanel.add(propIDF);
+
+        JLabel avlStatus = new JLabel("Availability Status:");
+        avlStatus.setBounds(50,312,labelwidth,labelheight);
+        avlStatus.setFont(new Font("Serif",Font.PLAIN,16));
+        UpdatePropertyDetailsPanel.add(avlStatus);
+        String avlStatusOptions[] = {"","Soon to be Available","Available for Rent","Available for Purchase",
+                                    "Rented","Bought"};
+        JComboBox<String> avlStatusC = new JComboBox<String>(avlStatusOptions);
+        avlStatusC.setBounds(220,332,labelwidth,labelheight-34);
+        UpdatePropertyDetailsPanel.add(avlStatusC);
+        avlStatus.setVisible(false);avlStatusC.setVisible(false);
         
 
         ViewUpdateProperty = new JButton("View Property");
         ViewUpdateProperty.setBounds(140,500,labelwidth-20,labelheight-25);
         ViewUpdateProperty.setFont(new Font("Serif", Font.PLAIN,24));
         UpdatePropertyDetailsPanel.add(ViewUpdateProperty);
+        ViewUpdateProperty.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                avlStatus.setVisible(true);avlStatusC.setVisible(true);
+            }
+        });
 
         FinalUpdate = new JButton("Update");
         FinalUpdate.setVisible(false);
@@ -705,6 +805,14 @@ class InitialPage extends JFrame{
         UpdatePropertyBack.setBounds(330,500,labelwidth-70,labelheight-25);
         UpdatePropertyBack.setFont(new Font("Serif", Font.PLAIN,24));
         UpdatePropertyDetailsPanel.add(UpdatePropertyBack);
+        UpdatePropertyBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                avlStatus.setVisible(false);avlStatusC.setVisible(false);
+                ViewUpdateProperty.setVisible(true);
+                FinalUpdate.setVisible(false);
+            }
+        });
     }
 
     private void SearchForPropertyPanelSetup() {
@@ -713,11 +821,101 @@ class InitialPage extends JFrame{
         SearchForPropertyPanel.setLayout(null);
         SearchForPropertyPanel.setBackground(Color.cyan);
 
+        JLabel heading  = new JLabel("Search for Properties");
+        heading.setBounds(200,10,labelwidth+100,labelheight);
+        heading.setFont(new Font("Serif",Font.PLAIN,24));
+        SearchForPropertyPanel.add(heading); 
         
+        //
+        JCheckBox searchByType  = new JCheckBox("Search by Property Type");
+        searchByType.setBounds(50,70,labelwidth,labelheight);
+        searchByType.setFont(new Font("Serif",Font.PLAIN,16));
+        SearchForPropertyPanel.add(searchByType);
+        searchByType.setBackground(Color.CYAN);
+        String propTypeOptions[] = {"","Apartment","House","Standalone Shop","Office building"};
+        JComboBox<String> propTypeC = new JComboBox<String>(propTypeOptions);
+        //JTextField searchByTypeF = new JTextField(50);
+        propTypeC.setBounds(280,85,labelwidth,labelheight-25);
+        SearchForPropertyPanel.add(propTypeC);
+        propTypeC.setVisible(false);
+        searchByType.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(searchByType.isSelected()){
+                    propTypeC.setVisible(true);
+                }
+                else{
+                    propTypeC.setVisible(false);
+                }
+            }
+        });
+
+        JCheckBox searchByCity  = new JCheckBox("Search by City");
+        searchByCity.setBounds(50,130,labelwidth,labelheight);
+        searchByCity.setFont(new Font("Serif",Font.PLAIN,16));
+        SearchForPropertyPanel.add(searchByCity);
+        searchByCity.setBackground(Color.CYAN);
+        JTextField searchByCityF = new JTextField(50);
+        searchByCityF.setBounds(280,145,labelwidth,labelheight-25);
+        SearchForPropertyPanel.add(searchByCityF);
+        searchByCityF.setVisible(false);
+        searchByCity.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(searchByCity.isSelected()){
+                    searchByCityF.setVisible(true);
+                }
+                else{
+                    searchByCityF.setVisible(false);
+                }
+            }
+        });
+
+        JCheckBox searchByState  = new JCheckBox("Search by State");
+        searchByState.setBounds(50,190,labelwidth,labelheight);
+        searchByState.setFont(new Font("Serif",Font.PLAIN,16));
+        SearchForPropertyPanel.add(searchByState);
+        searchByState.setBackground(Color.CYAN);
+        JTextField searchByStateF = new JTextField(50);
+        searchByStateF.setBounds(280,205,labelwidth,labelheight-25);
+        SearchForPropertyPanel.add(searchByStateF);
+        searchByStateF.setVisible(false);
+        searchByState.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(searchByState.isSelected()){
+                    searchByStateF.setVisible(true);
+                }
+                else{
+                    searchByStateF.setVisible(false);
+                }
+            }
+        });
+        
+
+        Search = new JButton("Search");
+        Search.setBounds(180,500,labelwidth-70,labelheight-25);
+        Search.setFont(new Font("Serif", Font.PLAIN,24));
+        SearchForPropertyPanel.add(Search);
+        Search.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
         SearchPropertyBack = new JButton("Go back");
-        SearchPropertyBack.setBounds(230,450,labelwidth-70,labelheight-25);
+        SearchPropertyBack.setBounds(330,500,labelwidth-70,labelheight-25);
         SearchPropertyBack.setFont(new Font("Serif", Font.PLAIN,24));
         SearchForPropertyPanel.add(SearchPropertyBack);
+        SearchPropertyBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchByState.setSelected(false);searchByStateF.setVisible(false);
+                searchByCity.setSelected(false);searchByCityF.setVisible(false);
+                searchByType.setSelected(false);propTypeC.setVisible(false);
+            }
+        });
     }
 
     private void RegisterChoicePanelSetup() {
