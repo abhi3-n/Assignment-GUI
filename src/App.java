@@ -16,19 +16,45 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.StringTokenizer;
 
 public class App {
-    
+    static private ServerSocket serverSocket = null;
+    static BufferedReader bufferedReader = null;
+    static InputStreamReader inputStreamReader = null;
     public static void main(String[] args) throws Exception {
         InitialPage iPage = new InitialPage();
+
+        //getting number of clients and properties
+        serverSocket = new ServerSocket(7777);
+        Socket socket = serverSocket.accept();
+        inputStreamReader = new InputStreamReader(socket.getInputStream());
+        bufferedReader = new BufferedReader(inputStreamReader);
+        String message = bufferedReader.readLine();
+        System.out.println(message);    //remove later
+        serverSocket.close();
+        socket.close();
+
+        StringTokenizer st = new StringTokenizer(message," ");
+        int numClients = Integer.parseInt(st.nextToken()),numProps = Integer.parseInt(st.nextToken());
+        System.out.println(numClients+" "+numProps);  //remove later
+        InitialPage.numClients = numClients;
+        InitialPage.numProps = numProps;
     }
 }
 
 class InitialPage extends JFrame{
+    static int numClients= 0; 
+    static int numProps= 0; 
+    static int brokerID = 1;
+
     private Socket client = null;
     JCheckBox alreadyReg = null;
 
@@ -126,6 +152,20 @@ class InitialPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"2");
+                try {
+                    client = new Socket("192.168.1.19",4444);
+                    PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
+                    printWriter.write("3");
+                    printWriter.flush();
+                    printWriter.close();
+                    client.close();
+                } catch (UnknownHostException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -1007,5 +1047,17 @@ class InitialPage extends JFrame{
         InitialToRegister.setBounds(230,300,labelwidth-100,labelheight-25);
         InitialToRegister.setFont(new Font("Serif", Font.PLAIN,24));
         InitialPanel.add(InitialToRegister);
+    }
+
+    private static int getClientID(){
+        return ++numClients;
+    } 
+    private static int getPropertyID(){
+        return ++numProps;
+    } 
+
+    private static int getBrokerID(){
+        int tempbrokerID = (brokerID++)%4;;
+        return (tempbrokerID!=0)?tempbrokerID:4; 
     }
 }
