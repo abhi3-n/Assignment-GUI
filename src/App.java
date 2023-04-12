@@ -538,6 +538,9 @@ class InitialPage extends JFrame{
         RegisterAsCustomerPanel.add(RegisterAsCustomerBack);
     }
 
+    /**
+     * 
+     */
     private void registerAsOwnerPanelSetup() {
         RegisterAsOwnerPanel = new JPanel();
         RegisterAsOwnerPanel.setBounds(0,0,600,600);
@@ -595,7 +598,6 @@ class InitialPage extends JFrame{
         alreadyReg.setBounds(440,60,labelwidth-70,labelheight-30);
         RegisterAsOwnerPanel.add(alreadyReg);
         
-
         alreadyReg.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -618,8 +620,6 @@ class InitialPage extends JFrame{
                 
             }
         });
-
-
 
         JLabel property  = new JLabel("Enter Property Details.");
         property.setBounds(200,148,labelwidth+50,labelheight);
@@ -749,6 +749,35 @@ class InitialPage extends JFrame{
         FinalRegisterOwnerProperty.setBounds(180,500,labelwidth-70,labelheight-25);
         FinalRegisterOwnerProperty.setFont(new Font("Serif", Font.PLAIN,24));
         RegisterAsOwnerPanel.add(FinalRegisterOwnerProperty);
+        FinalRegisterOwnerProperty.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int clientID = getClientID();
+                String clientDataInsert= "Insert Into client(ClientId, fName, lName, DOB) Values("+clientID+",'"+
+                                                                                                fNameF.getText()+"','"+
+                                                                                                lNameF.getText()+"','"+
+                                                                                                DOBF.getText()+"');";
+                String clientPhNoInsert = "Insert Into clientphno(PhNo,ClientId) Values("+PhNoF.getText()+","+
+                                                                                        clientID+");";
+                System.out.println(clientDataInsert+"\n"+clientPhNoInsert);
+
+                int propID = 0;
+                int brokerID = getBrokerID();
+                if(alreadyReg.isSelected()){
+                    propID = Integer.parseInt(ownerID.getText());
+                }
+                else{
+                    propID =  getPropertyID();
+                }
+                String propDataInsert = "Insert Into property(PropertyID, LocalAddress, City, State, AvailabilityStatus, FloorSize, PropertyType, BrokerID, OwnerID) Values("+
+                                            propID + ",'" +addressF.getText() + "','" + propCityF.getText() + "','" + 
+                                            propStateF.getText() + "','" + (String)avlStatusC.getSelectedItem() + "','" +
+                                            floorSizeF.getText() + "','" + (String)propTypeC.getSelectedItem() + "'," + 
+                                            brokerID + "," + clientID + ");";
+                System.out.print(propDataInsert);
+
+            }
+        });
 
         RegisterAsOwnerBack = new JButton("Go back");
         RegisterAsOwnerBack.setBounds(330,500,labelwidth-70,labelheight-25);
@@ -756,7 +785,6 @@ class InitialPage extends JFrame{
         RegisterAsOwnerPanel.add(RegisterAsOwnerBack);
     }
 
-    
     private void removePropertyPanelSetup() {
         RemovePropertyPanel = new JPanel();
         RemovePropertyPanel.setBounds(0,0,600,600);
