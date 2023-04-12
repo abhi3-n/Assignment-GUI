@@ -759,9 +759,15 @@ class InitialPage extends JFrame{
                                                                                                 DOBF.getText()+"');";
                 String clientPhNoInsert = "Insert Into clientphno(PhNo,ClientId) Values("+PhNoF.getText()+","+
                                                                                         clientID+");";
-                System.out.println(clientDataInsert+"\n"+clientPhNoInsert);
+                
 
                 int propID = 0;
+                int jt1I = Integer.parseInt(jt1.getText());
+                int jt2I = Integer.parseInt(jt2.getText());
+                int jt3I = Integer.parseInt(jt3.getText());
+                int jt4I = Integer.parseInt(jt4.getText());
+                
+                String propTypeString = (String) propTypeC.getSelectedItem();
                 int brokerID = getBrokerID();
                 if(alreadyReg.isSelected()){
                     propID = Integer.parseInt(ownerID.getText());
@@ -772,10 +778,41 @@ class InitialPage extends JFrame{
                 String propDataInsert = "Insert Into property(PropertyID, LocalAddress, City, State, AvailabilityStatus, FloorSize, PropertyType, BrokerID, OwnerID) Values("+
                                             propID + ",'" +addressF.getText() + "','" + propCityF.getText() + "','" + 
                                             propStateF.getText() + "','" + (String)avlStatusC.getSelectedItem() + "','" +
-                                            floorSizeF.getText() + "','" + (String)propTypeC.getSelectedItem() + "'," + 
+                                            floorSizeF.getText() + "','" + propTypeString + "'," + 
                                             brokerID + "," + clientID + ");";
-                System.out.print(propDataInsert);
+                
+                String levelOneQuery = "";
+                String levelTwoQuery = "";
+                if(propTypeString.equals("Apartment") || propTypeString.equals("House")){
+                    levelOneQuery = "Insert into residential(PropertyID, Bedrooms, Bathrooms, Balconies) values("+
+                                    propID + "," + jt1I + "," + jt2I + "," +jt3I + ");";
 
+                    if(propTypeString.equals("Apartment")){
+                        levelTwoQuery = "Insert into apartment(PropertyID, FloorNumber, BuildingName) Values"+
+                                        propID + "," + jt4I + ",'" + jt5.getText() + "');";
+                    }
+                    else{
+                        levelTwoQuery = "Insert into house(PropertyID, Storeys, GarageAvailability) Values"+
+                                        propID + "," + jt4I + ",'" + jt5.getText() + "');";
+                    }
+                }
+                else if(propTypeString.equals("Standalone Shop") || propTypeString.equals("Office building")){
+                    levelOneQuery = "Insert into commercial(PropertyID, Storeys) values(" +
+                                     propID + "," + jt1I + ")";
+
+                    if(propTypeString.equals("Standalone Shop")){
+                        levelTwoQuery = "Insert into standaloneshop(PropertyID, NumberOfSections) Values("+
+                                        propID + "," + jt2I  + ");";
+                    }
+                    else{
+                        levelTwoQuery = "Insert into officebuilding(PropertyID, Cabins, MeetingRooms, CubicleDesks) Values("+
+                                        propID + "," + jt2I + "," + jt3I + "," + jt4I + ");";
+                    }
+                }
+                System.out.println(clientDataInsert+"\n"+clientPhNoInsert);
+                System.out.print(propDataInsert);
+                //an update query also for number of registered properties for owner
+                System.out.println(levelOneQuery + "\n" + levelTwoQuery);
             }
         });
 
