@@ -23,6 +23,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class App {
@@ -51,6 +53,8 @@ public class App {
 }
 
 class InitialPage extends JFrame{
+    //private String ipv4 = "192.168.1.19"; 
+    private static String ipv4 = "192.168.18.5"; 
     static int numClients= 0; 
     static int numProps= 0; 
     static int brokerID = 1;
@@ -153,7 +157,7 @@ class InitialPage extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"2");
                 try {
-                    client = new Socket("192.168.1.19",4444);
+                    client = new Socket(ipv4,4444);
                     PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
                     printWriter.write("3");
                     printWriter.flush();
@@ -182,7 +186,7 @@ class InitialPage extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"3");
                 try {
-                    client = new Socket("192.168.1.19",4444);
+                    client = new Socket(ipv4,4444);
                     PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
                     printWriter.write("1");
                     printWriter.flush();
@@ -192,7 +196,6 @@ class InitialPage extends JFrame{
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 } catch (IOException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
             }
@@ -203,17 +206,15 @@ class InitialPage extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"2");
                 try {
-                    client = new Socket("192.168.1.19",4444);
+                    client = new Socket(ipv4,4444);
                     PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
                     printWriter.write("return");
                     printWriter.flush();
                     printWriter.close();
                     client.close();
                 } catch (UnknownHostException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 } catch (IOException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
             }
@@ -224,7 +225,7 @@ class InitialPage extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"4");
                 try {
-                    client = new Socket("192.168.1.19",4444);
+                    client = new Socket(ipv4,4444);
                     PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
                     printWriter.write("2");
                     printWriter.flush();
@@ -245,7 +246,7 @@ class InitialPage extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"2");
                 try {
-                    client = new Socket("192.168.1.19",4444);
+                    client = new Socket(ipv4,4444);
                     PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
                     printWriter.write("return");
                     printWriter.flush();
@@ -266,7 +267,7 @@ class InitialPage extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"5");
                 try {
-                    client = new Socket("192.168.1.19",4444);
+                    client = new Socket(ipv4,4444);
                     PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
                     printWriter.write("1");
                     printWriter.flush();
@@ -287,7 +288,7 @@ class InitialPage extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"2");
                 try {
-                    client = new Socket("192.168.1.19",4444);
+                    client = new Socket(ipv4,4444);
                     PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
                     printWriter.write("return");
                     printWriter.flush();
@@ -308,7 +309,7 @@ class InitialPage extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"6");
                 try {
-                    client = new Socket("192.168.1.19",4444);
+                    client = new Socket(ipv4,4444);
                     PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
                     printWriter.write("1");
                     printWriter.flush();
@@ -329,7 +330,7 @@ class InitialPage extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel,"2");
                 try {
-                    client = new Socket("192.168.1.19",4444);
+                    client = new Socket(ipv4,4444);
                     PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
                     printWriter.write("return");
                     printWriter.flush();
@@ -531,6 +532,32 @@ class InitialPage extends JFrame{
         FinalRegisterCustomer.setBounds(180,500,labelwidth-70,labelheight-25);
         FinalRegisterCustomer.setFont(new Font("Serif", Font.PLAIN,24));
         RegisterAsCustomerPanel.add(FinalRegisterCustomer);
+        FinalRegisterCustomer.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int clientID = getClientID();
+
+                //Insert queries for relations- client, clientphno, customer
+                String clientDataInsert= "Insert Into client(ClientId, fName, lName, DOB) Values("+clientID+",'"+
+                                                                                                fNameF.getText()+"','"+
+                                                                                                lNameF.getText()+"','"+
+                                                                                                DOBF.getText()+"');";
+                String clientPhNoInsert = "Insert Into clientphno(PhNo,ClientId) Values("+PhNoF.getText()+","+
+                                                                                        clientID+");";
+
+                String customerInsert = "Insert Into customer(ClientID, ReqdPropertyType, PropertyCity, PropertyState) Values(" + 
+                                                              clientID + "," + (String)propTypeC.getSelectedItem() + "," + 
+                                                              propCityF.getText() + "," + propStateF.getText() + ");";
+
+            
+                System.out.println(clientDataInsert+"\n"+clientPhNoInsert+"\n" + customerInsert);
+                
+                writeOnSocket(clientDataInsert);recieveFromSocket();writeOnSocket("1");
+                writeOnSocket(clientPhNoInsert);recieveFromSocket();writeOnSocket("1");
+                writeOnSocket(customerInsert);recieveFromSocket();
+
+            }
+        });
         
         RegisterAsCustomerBack = new JButton("Go back");
         RegisterAsCustomerBack.setBounds(330,500,labelwidth-70,labelheight-25);
@@ -538,9 +565,6 @@ class InitialPage extends JFrame{
         RegisterAsCustomerPanel.add(RegisterAsCustomerBack);
     }
 
-    /**
-     * 
-     */
     private void registerAsOwnerPanelSetup() {
         RegisterAsOwnerPanel = new JPanel();
         RegisterAsOwnerPanel.setBounds(0,0,600,600);
@@ -752,29 +776,39 @@ class InitialPage extends JFrame{
         FinalRegisterOwnerProperty.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                int clientID = getClientID();
+                int clientID = 0;
+                if(alreadyReg.isSelected()){
+                    clientID = Integer.parseInt(ownerIDF.getText());
+                }
+                else {
+                    clientID = getClientID();
+                }
+                int propID = getPropertyID();
+                int brokerID = getBrokerID();
+
+                //Insert queries for relations- client, clientphno, owner, property, propertylevelone, propertyleveltwo
                 String clientDataInsert= "Insert Into client(ClientId, fName, lName, DOB) Values("+clientID+",'"+
                                                                                                 fNameF.getText()+"','"+
                                                                                                 lNameF.getText()+"','"+
                                                                                                 DOBF.getText()+"');";
                 String clientPhNoInsert = "Insert Into clientphno(PhNo,ClientId) Values("+PhNoF.getText()+","+
                                                                                         clientID+");";
-                
 
-                int propID = 0;
+                String ownerInsert = "Insert Into owner(ClientID, NumberOfListedProperties) Values(" + clientID + "," +
+                                     1 +  ");";
+
+
+                String ownerUpdate = "Update owner SET NumberOfListedProperties = NumberOfListedProperties+1 where ClientID = "+
+                                        clientID + ";";
+
+                
                 int jt1I = Integer.parseInt(jt1.getText());
                 int jt2I = Integer.parseInt(jt2.getText());
                 int jt3I = Integer.parseInt(jt3.getText());
                 int jt4I = Integer.parseInt(jt4.getText());
                 
                 String propTypeString = (String) propTypeC.getSelectedItem();
-                int brokerID = getBrokerID();
-                if(alreadyReg.isSelected()){
-                    propID = Integer.parseInt(ownerID.getText());
-                }
-                else{
-                    propID =  getPropertyID();
-                }
+                
                 String propDataInsert = "Insert Into property(PropertyID, LocalAddress, City, State, AvailabilityStatus, FloorSize, PropertyType, BrokerID, OwnerID) Values("+
                                             propID + ",'" +addressF.getText() + "','" + propCityF.getText() + "','" + 
                                             propStateF.getText() + "','" + (String)avlStatusC.getSelectedItem() + "','" +
@@ -788,11 +822,11 @@ class InitialPage extends JFrame{
                                     propID + "," + jt1I + "," + jt2I + "," +jt3I + ");";
 
                     if(propTypeString.equals("Apartment")){
-                        levelTwoQuery = "Insert into apartment(PropertyID, FloorNumber, BuildingName) Values"+
+                        levelTwoQuery = "Insert into apartment(PropertyID, FloorNumber, BuildingName) Values("+
                                         propID + "," + jt4I + ",'" + jt5.getText() + "');";
                     }
                     else{
-                        levelTwoQuery = "Insert into house(PropertyID, Storeys, GarageAvailability) Values"+
+                        levelTwoQuery = "Insert into house(PropertyID, Storeys, GarageAvailability) Values("+
                                         propID + "," + jt4I + ",'" + jt5.getText() + "');";
                     }
                 }
@@ -809,10 +843,26 @@ class InitialPage extends JFrame{
                                         propID + "," + jt2I + "," + jt3I + "," + jt4I + ");";
                     }
                 }
+                
                 System.out.println(clientDataInsert+"\n"+clientPhNoInsert);
+                System.out.println(ownerInsert);
+                System.out.println(ownerUpdate);
                 System.out.print(propDataInsert);
-                //an update query also for number of registered properties for owner
                 System.out.println(levelOneQuery + "\n" + levelTwoQuery);
+
+                if(!alreadyReg.isSelected()){
+                    writeOnSocket(clientDataInsert);recieveFromSocket();writeOnSocket("1");
+                    writeOnSocket(clientPhNoInsert);recieveFromSocket();writeOnSocket("1");
+                    writeOnSocket(ownerInsert);recieveFromSocket();writeOnSocket("1");
+                }
+                else{
+                    writeOnSocket(ownerUpdate);recieveFromSocket();writeOnSocket("1");
+                }
+
+                writeOnSocket(propDataInsert);recieveFromSocket();writeOnSocket("1");
+                writeOnSocket(levelOneQuery);recieveFromSocket();writeOnSocket("1");
+                writeOnSocket(levelTwoQuery);recieveFromSocket();
+
             }
         });
 
@@ -1125,4 +1175,94 @@ class InitialPage extends JFrame{
         int tempbrokerID = (brokerID++)%4;;
         return (tempbrokerID!=0)?tempbrokerID:4; 
     }
+  
+    protected void writeOnSocket(String data){
+        System.out.println("Sending this----->" + data);
+        try {
+            client = new Socket(ipv4,4444);
+            PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
+            printWriter.write(data);
+            printWriter.flush();
+            printWriter.close();
+            client.close();
+        }catch (UnknownHostException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        //System.out.println("Sent this----->" + data);
+    }
+
+    void recieveFromSocket(){
+        try {
+            ServerSocket serverSocket = new ServerSocket(7777);
+            Socket socket = serverSocket.accept();
+            InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String message = bufferedReader.readLine();
+            System.out.println(message);    //remove later
+            serverSocket.close();    
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void executeQuery(ArrayList<String> queryList) {
+        PrintWriter printWriter = null;
+        try {
+            client = new Socket(ipv4,4444);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+        String query = "";
+
+        for(int i = 0 ; i< queryList.size() ;i++){
+            query = queryList.get(i);
+            try {
+                printWriter = new PrintWriter(client.getOutputStream(),true);
+                printWriter.write(query);
+                printWriter.flush();
+                printWriter.close();
+
+                //Thread.sleep(10000);
+
+                printWriter = new PrintWriter(client.getOutputStream(),true);
+                printWriter.write("1");
+                printWriter.flush();
+                printWriter.close();
+                //Thread.sleep(2000);
+            } catch (IOException e) {
+                e.printStackTrace();
+             }
+             //catch (InterruptedException e) {
+            //         e.printStackTrace();
+            // }
+            
+            // try {
+            //     
+            // } 
+            // printWriter.write("1");
+            // printWriter.flush();
+            // try {
+            //     Thread.sleep(2000);
+            // } catch (InterruptedException e) {
+            //     e.printStackTrace();
+            // }
+        }
+
+        try {
+            printWriter = new PrintWriter(client.getOutputStream(),true);
+            printWriter.write("return");
+            printWriter.flush();
+            printWriter.close();
+            client.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
 }
