@@ -371,18 +371,21 @@ class InitialPage extends JFrame{
                 jt5.setVisible(false);                 
             }
         });
+       
         RegisterAsCustomerBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(contPanel, "3");
             }
         });
+       
         FinalRegisterOwnerProperty.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
+       
         FinalRegisterCustomer.addActionListener(new ActionListener() {
 
             @Override
@@ -423,7 +426,7 @@ class InitialPage extends JFrame{
         Search.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(contPanel, "9");
+                //cardLayout.show(contPanel, "9");
             }
         });
 
@@ -555,7 +558,6 @@ class InitialPage extends JFrame{
                 writeOnSocket(clientDataInsert);recieveFromSocket();writeOnSocket("1");
                 writeOnSocket(clientPhNoInsert);recieveFromSocket();writeOnSocket("1");
                 writeOnSocket(customerInsert);recieveFromSocket();
-
             }
         });
         
@@ -890,6 +892,14 @@ class InitialPage extends JFrame{
         JTextField propIDF = new JTextField(50);
         propIDF.setBounds(220,62,labelwidth,labelheight-34);
         RemovePropertyPanel.add(propIDF);
+
+        JLabel clientID  = new JLabel("Enter Owner ID:");
+        clientID.setBounds(50,70,labelwidth,labelheight);
+        clientID.setFont(new Font("Serif",Font.PLAIN,16));
+        RemovePropertyPanel.add(clientID);
+        JTextField clientIDF = new JTextField(50);
+        clientIDF.setBounds(220,88,labelwidth,labelheight-34);
+        RemovePropertyPanel.add(clientIDF);
         
         ViewProperty = new JButton("View Property");
         ViewProperty.setBounds(140,500,labelwidth-20,labelheight-25);
@@ -901,11 +911,26 @@ class InitialPage extends JFrame{
         FinalRemove.setBounds(180,500,labelwidth-70,labelheight-25);
         FinalRemove.setFont(new Font("Serif", Font.PLAIN,24));
         RemovePropertyPanel.add(FinalRemove);
+        FinalRemove.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String removePropertyQuery = "Delete from property where PropertyID= " + propIDF.getText() +
+                                              " AND OwnerID = " + Integer.parseInt(clientIDF.getText())  +" ;";
+                writeOnSocket(removePropertyQuery);recieveFromSocket();writeOnSocket("1");
+            }
+        });
         
         RemovePropertyBack = new JButton("Go back");
         RemovePropertyBack.setBounds(330,500,labelwidth-70,labelheight-25);
         RemovePropertyBack.setFont(new Font("Serif", Font.PLAIN,24));
         RemovePropertyPanel.add(RemovePropertyBack);
+        RemovePropertyBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FinalRemove.setVisible(false);
+                ViewProperty.setVisible(true);
+            }
+        });
     }
     
     private void updatePropertyDetailsPanelSetup() {
@@ -926,6 +951,14 @@ class InitialPage extends JFrame{
         JTextField propIDF = new JTextField(50);
         propIDF.setBounds(220,62,labelwidth,labelheight-34);
         UpdatePropertyDetailsPanel.add(propIDF);
+
+        JLabel clientID  = new JLabel("Enter Owner ID:");
+        clientID.setBounds(50,70,labelwidth,labelheight);
+        clientID.setFont(new Font("Serif",Font.PLAIN,16));
+        UpdatePropertyDetailsPanel.add(clientID);
+        JTextField clientIDF = new JTextField(50);
+        clientIDF.setBounds(220,88,labelwidth,labelheight-34);
+        UpdatePropertyDetailsPanel.add(clientIDF);
 
         JLabel avlStatus = new JLabel("Availability Status:");
         avlStatus.setBounds(50,312,labelwidth,labelheight);
@@ -955,6 +988,16 @@ class InitialPage extends JFrame{
         FinalUpdate.setBounds(180,500,labelwidth-70,labelheight-25);
         FinalUpdate.setFont(new Font("Serif", Font.PLAIN,24));
         UpdatePropertyDetailsPanel.add(FinalUpdate);
+        FinalUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String updateQuery = "Update property set AvailabilityStatus = '" + (String)avlStatusC.getSelectedItem()
+                                         + "' where PropertyID = " + Integer.parseInt(propIDF.getText()) + 
+                                         " AND OwnerID = " + Integer.parseInt(clientIDF.getText()) + " ;";
+
+                writeOnSocket(updateQuery);recieveFromSocket();writeOnSocket("1");
+            }
+        });
         
         UpdatePropertyBack = new JButton("Go back");
         UpdatePropertyBack.setBounds(330,500,labelwidth-70,labelheight-25);
@@ -989,7 +1032,6 @@ class InitialPage extends JFrame{
         searchByType.setBackground(Color.CYAN);
         String propTypeOptions[] = {"","Apartment","House","Standalone Shop","Office building"};
         JComboBox<String> propTypeC = new JComboBox<String>(propTypeOptions);
-        //JTextField searchByTypeF = new JTextField(50);
         propTypeC.setBounds(280,85,labelwidth,labelheight-25);
         SearchForPropertyPanel.add(propTypeC);
         propTypeC.setVisible(false);
@@ -1056,6 +1098,21 @@ class InitialPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                String searchQuery = "Select PropertyID, LocalAddress, City, State, AvailabilityStatus, FloorSize, OwnerID, lName, fName from property" +
+                                      ",client where property.OwnerID = client.ClientID ";
+
+                if(searchByType.isSelected()){
+                    searchQuery += "AND property.PropertyType = '" + (String)propTypeC.getSelectedItem() +"' ";
+                }
+                if(searchByCity.isSelected()){
+                    searchQuery += "AND property.City = '" + searchByCityF.getText() +"' ";
+                }
+                if(searchByState.isSelected()){
+                    searchQuery += "AND property.State = '" + searchByStateF.getText() +"' ";
+                }
+                searchQuery += ";";
+                writeOnSocket(searchQuery);recieveFromSocket();writeOnSocket("2");
+                cardLayout.show(contPanel, "9");
             }
         });
 
