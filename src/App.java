@@ -368,7 +368,7 @@ class InitialPage extends JFrame{
                 jl1.setVisible(false);jl2.setVisible(false);jl3.setVisible(false);jl4.setVisible(false);
                 jl5.setVisible(false);     
                 jt1.setVisible(false);jt2.setVisible(false);jt3.setVisible(false);jt4.setVisible(false);
-                jt5.setVisible(false);                 
+                jt5.setVisible(false);
             }
         });
        
@@ -549,8 +549,8 @@ class InitialPage extends JFrame{
                                                                                         clientID+");";
 
                 String customerInsert = "Insert Into customer(ClientID, ReqdPropertyType, PropertyCity, PropertyState) Values(" + 
-                                                              clientID + "," + (String)propTypeC.getSelectedItem() + "," + 
-                                                              propCityF.getText() + "," + propStateF.getText() + ");";
+                                                              clientID + ",'" + (String)propTypeC.getSelectedItem() + "','" + 
+                                                              propCityF.getText() + "','" + propStateF.getText() + "');";
 
             
                 System.out.println(clientDataInsert+"\n"+clientPhNoInsert+"\n" + customerInsert);
@@ -558,6 +558,7 @@ class InitialPage extends JFrame{
                 writeOnSocket(clientDataInsert);recieveFromSocket();writeOnSocket("1");
                 writeOnSocket(clientPhNoInsert);recieveFromSocket();writeOnSocket("1");
                 writeOnSocket(customerInsert);recieveFromSocket();
+                writeOnSocket("1");
             }
         });
         
@@ -779,6 +780,7 @@ class InitialPage extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 int clientID = 0;
+                String propTypeString = (String) propTypeC.getSelectedItem();
                 if(alreadyReg.isSelected()){
                     clientID = Integer.parseInt(ownerIDF.getText());
                 }
@@ -806,10 +808,13 @@ class InitialPage extends JFrame{
                 
                 int jt1I = Integer.parseInt(jt1.getText());
                 int jt2I = Integer.parseInt(jt2.getText());
-                int jt3I = Integer.parseInt(jt3.getText());
-                int jt4I = Integer.parseInt(jt4.getText());
+                int jt3I = 0;
+                int jt4I = 0;
+                if(!propTypeString.equals("Standalone Shop")){
+                    jt3I = Integer.parseInt(jt3.getText());
+                    jt4I = Integer.parseInt(jt4.getText());
+                }
                 
-                String propTypeString = (String) propTypeC.getSelectedItem();
                 
                 String propDataInsert = "Insert Into property(PropertyID, LocalAddress, City, State, AvailabilityStatus, FloorSize, PropertyType, BrokerID, OwnerID) Values("+
                                             propID + ",'" +addressF.getText() + "','" + propCityF.getText() + "','" + 
@@ -864,7 +869,7 @@ class InitialPage extends JFrame{
                 writeOnSocket(propDataInsert);recieveFromSocket();writeOnSocket("1");
                 writeOnSocket(levelOneQuery);recieveFromSocket();writeOnSocket("1");
                 writeOnSocket(levelTwoQuery);recieveFromSocket();
-
+                writeOnSocket("1");
             }
         });
 
