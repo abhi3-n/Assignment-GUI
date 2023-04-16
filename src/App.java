@@ -1,5 +1,6 @@
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -12,13 +13,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.JTableHeader;
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -58,6 +63,7 @@ class InitialPage extends JFrame{
     static int numClients= 0; 
     static int numProps= 0; 
     static int brokerID = 1;
+    JScrollPane pane = null;
 
     private Socket client = null;
     JCheckBox alreadyReg = null;
@@ -269,7 +275,7 @@ class InitialPage extends JFrame{
                 try {
                     client = new Socket(ipv4,4444);
                     PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
-                    printWriter.write("1");
+                    printWriter.write("2");
                     printWriter.flush();
                     printWriter.close();
                     client.close();
@@ -311,7 +317,7 @@ class InitialPage extends JFrame{
                 try {
                     client = new Socket(ipv4,4444);
                     PrintWriter printWriter = new PrintWriter(client.getOutputStream(),true);
-                    printWriter.write("1");
+                    printWriter.write("2");
                     printWriter.flush();
                     printWriter.close();
                     client.close();
@@ -910,6 +916,30 @@ class InitialPage extends JFrame{
         ViewProperty.setBounds(140,500,labelwidth-20,labelheight-25);
         ViewProperty.setFont(new Font("Serif", Font.PLAIN,24));
         RemovePropertyPanel.add(ViewProperty);
+        ViewProperty.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String viewProperty = "Select PropertyID, LocalAddress, City, State, AvailabilityStatus, FloorSize, OwnerID from property where " +
+                                        "PropertyID = " + Integer.parseInt(propIDF.getText()) + " AND OwnerID = "+
+                                        Integer.parseInt(clientIDF.getText()) +";";
+
+                writeOnSocket(viewProperty);recieveFromSocket();
+
+                JTable searchResults = recieveSearchResultsFromSocket();
+                JTableHeader header = searchResults.getTableHeader();
+                header.setBackground(Color.yellow);
+                searchResults.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+                pane = new JScrollPane(searchResults);
+                searchResults.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                pane.setBounds(50,200,500,60);
+                pane.setVisible(true);
+                RemovePropertyPanel.add(pane);
+
+                writeOnSocket("1");
+            }
+        });
+        
 
         FinalRemove = new JButton("Remove");
         FinalRemove.setVisible(false);
@@ -934,6 +964,7 @@ class InitialPage extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 FinalRemove.setVisible(false);
                 ViewProperty.setVisible(true);
+                pane.setVisible(false);
             }
         });
     }
@@ -965,8 +996,8 @@ class InitialPage extends JFrame{
         clientIDF.setBounds(220,88,labelwidth,labelheight-34);
         UpdatePropertyDetailsPanel.add(clientIDF);
 
-        JLabel avlStatus = new JLabel("Availability Status:");
-        avlStatus.setBounds(50,312,labelwidth,labelheight);
+        JLabel avlStatus = new JLabel("Updated Availability Status:");
+        avlStatus.setBounds(40,312,labelwidth,labelheight);
         avlStatus.setFont(new Font("Serif",Font.PLAIN,16));
         UpdatePropertyDetailsPanel.add(avlStatus);
         String avlStatusOptions[] = {"","Soon to be Available","Available for Rent","Available for Purchase",
@@ -976,7 +1007,7 @@ class InitialPage extends JFrame{
         UpdatePropertyDetailsPanel.add(avlStatusC);
         avlStatus.setVisible(false);avlStatusC.setVisible(false);
         
-
+        
         ViewUpdateProperty = new JButton("View Property");
         ViewUpdateProperty.setBounds(140,500,labelwidth-20,labelheight-25);
         ViewUpdateProperty.setFont(new Font("Serif", Font.PLAIN,24));
@@ -984,6 +1015,24 @@ class InitialPage extends JFrame{
         ViewUpdateProperty.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String viewProperty = "Select PropertyID, LocalAddress, City, State, AvailabilityStatus, FloorSize, OwnerID from property where " +
+                                        "PropertyID = " + Integer.parseInt(propIDF.getText()) + " AND OwnerID = "+
+                                        Integer.parseInt(clientIDF.getText()) +";";
+
+                writeOnSocket(viewProperty);recieveFromSocket();
+
+                JTable searchResults = recieveSearchResultsFromSocket();
+                JTableHeader header = searchResults.getTableHeader();
+                header.setBackground(Color.yellow);
+                searchResults.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+                pane = new JScrollPane(searchResults);
+                searchResults.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                pane.setBounds(50,200,500,60);
+                pane.setVisible(true);
+                UpdatePropertyDetailsPanel.add(pane);
+
+                writeOnSocket("1");
                 avlStatus.setVisible(true);avlStatusC.setVisible(true);
             }
         });
@@ -1014,6 +1063,7 @@ class InitialPage extends JFrame{
                 avlStatus.setVisible(false);avlStatusC.setVisible(false);
                 ViewUpdateProperty.setVisible(true);
                 FinalUpdate.setVisible(false);
+                pane.setVisible(false);
             }
         });
     }
@@ -1104,7 +1154,7 @@ class InitialPage extends JFrame{
             public void actionPerformed(ActionEvent e) {
 
                 String searchQuery = "Select PropertyID, LocalAddress, City, State, AvailabilityStatus, FloorSize, OwnerID, lName, fName from property" +
-                                      ",client where property.OwnerID = client.ClientID ";
+                                       ",client where property.OwnerID = client.ClientID ";
 
                 if(searchByType.isSelected()){
                     searchQuery += "AND property.PropertyType = '" + (String)propTypeC.getSelectedItem() +"' ";
@@ -1116,7 +1166,19 @@ class InitialPage extends JFrame{
                     searchQuery += "AND property.State = '" + searchByStateF.getText() +"' ";
                 }
                 searchQuery += ";";
-                writeOnSocket(searchQuery);recieveFromSocket();writeOnSocket("2");
+                writeOnSocket(searchQuery);recieveFromSocket();
+
+                JTable searchResults = recieveSearchResultsFromSocket();
+                JTableHeader header = searchResults.getTableHeader();
+                header.setBackground(Color.yellow);
+                searchResults.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+                JScrollPane pane = new JScrollPane(searchResults);
+                searchResults.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                pane.setBounds(50,50,500,400);
+                searchResultsPanel.add(pane);
+
+                writeOnSocket("2");
                 cardLayout.show(contPanel, "9");
             }
         });
@@ -1133,6 +1195,28 @@ class InitialPage extends JFrame{
                 searchByType.setSelected(false);propTypeC.setVisible(false);
             }
         });
+    }
+
+    protected JTable recieveSearchResultsFromSocket() {
+        ServerSocket serverSocket = null;
+        JTable rsJTable = null;
+        try {
+            serverSocket = new ServerSocket(7777);
+            Socket socket = serverSocket.accept();
+            InputStream inputStream = socket.getInputStream();
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            rsJTable = (JTable) objectInputStream.readObject();
+            socket.close();
+            serverSocket.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return rsJTable;
     }
 
     private void RegisterChoicePanelSetup() {
@@ -1263,6 +1347,7 @@ class InitialPage extends JFrame{
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String message = bufferedReader.readLine();
             System.out.println(message);    //remove later
+            socket.close();
             serverSocket.close();    
         } catch (IOException e) {
             e.printStackTrace();
